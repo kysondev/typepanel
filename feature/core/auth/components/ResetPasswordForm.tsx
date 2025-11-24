@@ -1,6 +1,6 @@
 "use client";
-import { resetPassword } from "actions/auth.action";
-import { Loading } from "components/ui/loading";
+import { resetPassword } from "@auth/actions/auth.action";
+import { Loading } from "@common/components/ui/loading";
 import Form from "next/form";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useTransition } from "react";

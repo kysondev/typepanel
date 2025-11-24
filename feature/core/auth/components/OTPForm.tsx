@@ -1,6 +1,6 @@
 "use client";
-import { verifyOTP } from "actions/auth.action";
-import { Loading } from "components/ui/loading";
+import { verifyOTP } from "@auth/actions/auth.action";
+import { Loading } from "@common/components/ui/loading";
 import Form from "next/form";
 import { useEffect, useRef, useState, useTransition } from "react";
 

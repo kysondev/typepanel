@@ -1,4 +1,4 @@
-import { AUTH_ROUTES, PROTECTED_ROUTES } from "config/routes";
+import { AUTH_ROUTES, PROTECTED_ROUTES } from "@auth/config/routes";
 import { NextResponse, type NextRequest } from "next/server";
 
 async function getSession(request: NextRequest) {

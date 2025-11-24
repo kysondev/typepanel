@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "lib/auth";
+import { auth } from "@auth/lib/auth";
 import { headers } from "next/headers";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 

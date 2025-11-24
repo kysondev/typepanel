@@ -1,5 +1,5 @@
-import { authClient } from "lib/auth-client";
-import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
+import { authClient } from "@auth/lib/auth-client";
+import { signInSchema, signUpSchema } from "@auth/lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 

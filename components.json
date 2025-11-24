@@ -5,14 +5,14 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "styles/globals.css",
+    "css": "feature/common/styles/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
-    "components": "components",
-    "utils": "lib/cn"
+    "components": "feature/common/components",
+    "utils": "feature/common/lib/cn"
   },
   "iconLibrary": "lucide"
 }

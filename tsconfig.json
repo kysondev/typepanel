@@ -19,7 +19,9 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./src/*"]
+			"~/*": ["./src/*"],
+			"@auth/*": ["./feature/core/auth/*"],
+			"@common/*": ["./feature/common/*"]
 		},
 		"target": "ES2023"
 	},

@@ -1,33 +1,42 @@
 "use client";
 import {
-  signInWithEmail,
   signInWithGithub,
   signInWithGoogle,
-} from "actions/auth.action";
-import { Loading } from "components/ui/loading";
+  signUp,
+} from "@auth/actions/auth.action";
+import { Loading } from "@common/components/ui/loading";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useTransition } from "react";
-import OTPForm from "./OTPForm";
+import { useTransition } from "react";
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const [isPending, startTransition] = useTransition();
-  const [isOTPOpen, setIsOTPOpen] = useState(false);
-
-  if (isOTPOpen) {
-    return <OTPForm onCancel={() => setIsOTPOpen(false)} />;
-  }
   return (
     <>
       <Form
         action={async (formData) => {
           startTransition(async () => {
-            await signInWithEmail(formData, setIsOTPOpen);
+            await signUp(formData);
           });
         }}
         className="space-y-5"
       >
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-xs font-medium text-gray-400 mb-1.5"
+          >
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="johndoe"
+            className="w-full px-3 py-2 rounded-sm bg-[#232323] text-white border border-[#333333] focus:outline-none focus:border-blue-500 text-sm"
+          />
+        </div>
         <div>
           <label
             htmlFor="email"
@@ -60,18 +69,13 @@ const LoginForm = () => {
           />
         </div>
 
-        <div className="flex justify-between text-xs mt-1">
+        <div className="flex gap-1 text-xs mt-1">
+          <span className="text-gray-400">Already have an account?</span>
           <Link
-            href="forgot-password"
-            className="text-gray-400 hover:text-blue-400 transition-colors"
+            href="login"
+            className="text-blue-400 hover:underline transition-colors"
           >
-            Forgot password?
-          </Link>
-          <Link
-            href="signup"
-            className="text-gray-400 hover:text-blue-400  transition-colors"
-          >
-            Create account
+            Login
           </Link>
         </div>
 
@@ -80,7 +84,7 @@ const LoginForm = () => {
           disabled={isPending}
           className="w-full bg-blue-600 text-white font-medium py-2 px-3 text-sm rounded-sm hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors mt-2"
         >
-          {isPending ? <Loading /> : "Sign in"}
+          {isPending ? <Loading /> : "Sign up"}
         </button>
       </Form>
       <div className="mt-8 pt-6 border-t border-[#2a2a2a]">
@@ -123,4 +127,4 @@ const LoginForm = () => {
     </>
   );
 };
-export default LoginForm;
+export default SignUpForm;

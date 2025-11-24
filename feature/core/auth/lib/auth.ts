@@ -2,11 +2,11 @@ import argon2 from "argon2";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin, twoFactor } from "better-auth/plugins";
-import { PrismaClient } from "../generated/prisma-client";
-import TwoFactorVerificationEmail from "templates/emails/TwoFactorVerificationEmail";
-import EmailVerification from "templates/emails/EmailVerification";
-import ResetPassword from "templates/emails/ResetPassword";
-import { sendEmail } from "./email";
+import TwoFactorVerificationEmail from "@auth/templates/emails/TwoFactorVerificationEmail";
+import EmailVerification from "@auth/templates/emails/EmailVerification";
+import ResetPassword from "@auth/templates/emails/ResetPassword";
+import { sendEmail } from "@common/lib/email";
+import { PrismaClient } from "generated/prisma-client";
 
 const prisma = new PrismaClient();
 export const auth = betterAuth({
