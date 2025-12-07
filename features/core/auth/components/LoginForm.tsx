@@ -8,22 +8,17 @@ import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useTransition } from "react";
-import OTPForm from "./OTPForm";
+import { useTransition } from "react";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
-  const [isOTPOpen, setIsOTPOpen] = useState(false);
 
-  if (isOTPOpen) {
-    return <OTPForm onCancel={() => setIsOTPOpen(false)} />;
-  }
   return (
     <>
       <Form
         action={async (formData) => {
           startTransition(async () => {
-            await signInWithEmail(formData, setIsOTPOpen);
+            await signInWithEmail(formData);
           });
         }}
         className="space-y-5"
