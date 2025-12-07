@@ -2,11 +2,11 @@ version: "3.9"
 
 services:
   app:
-    image: buildllm
+    image: typepanel
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: buildllm-app
+    container_name: typepanel-app
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -14,13 +14,7 @@ services:
       - .env
     environment:
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/buildllm}
-      RESEND_API_KEY: ${RESEND_API_KEY}
-      DEFAULT_EMAIL_SENDER_EMAIL: ${DEFAULT_EMAIL_SENDER_EMAIL}
-      DEFAULT_EMAIL_SENDER_NAME: ${DEFAULT_EMAIL_SENDER_NAME}
-      TWO_FA_EMAIL: ${TWO_FA_EMAIL}
-      VERIFICATION_EMAIL: ${VERIFICATION_EMAIL}
-      RESET_PASSWORD_EMAIL: ${RESET_PASSWORD_EMAIL}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/typepanel}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
     depends_on:
       - db
@@ -29,12 +23,12 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: buildllm-db
+    container_name: typepanel-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-buildllm}
+      POSTGRES_DB: ${POSTGRES_DB:-typepanel}
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:

@@ -3,8 +3,8 @@ import {
   signInWithEmail,
   signInWithGithub,
   signInWithGoogle,
-} from "@auth/actions/auth.action";
-import { Loading } from "@common/components/ui/loading";
+} from "features/core/auth/actions/auth.action";
+import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";

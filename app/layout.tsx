@@ -3,7 +3,7 @@ import "@common/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "BuildLLM",
+  title: "TypePanel",
   description:
     "Self-hosted platform to create, customize, and share AI chatbots.",
 };

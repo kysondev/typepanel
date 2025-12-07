@@ -1,5 +1,5 @@
 {
-  "projectName": "buildllm",
+  "projectName": "typepanel",
   "version": "0.1.1",
   "createdAt": "2025-11-16T21:13:46.669Z",
   "modules": ["database", "email", "auth"]

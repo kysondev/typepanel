@@ -1,6 +1,6 @@
 "use client";
-import { forgotPassword, signUp } from "@auth/actions/auth.action";
-import { Loading } from "@common/components/ui/loading";
+import { forgotPassword, signUp } from "features/core/auth/actions/auth.action";
+import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import { useTransition } from "react";
 
