@@ -4,11 +4,13 @@ import {
   signInWithGithub,
   signInWithGoogle,
 } from "features/core/auth/actions/auth.action";
+import { Button } from "features/common/components/ui/button";
+import { Input } from "features/common/components/ui/input";
 import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
-import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
+import { GitHubDark, Google } from "developer-icons";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -26,93 +28,90 @@ const LoginForm = () => {
         <div>
           <label
             htmlFor="email"
-            className="block text-xs font-medium text-gray-400 mb-1.5"
+            className="block text-xs font-medium text-neutral-600 mb-1.5"
           >
             Email
           </label>
-          <input
-            type="text"
+          <Input
+            type="email"
             id="email"
             name="email"
-            placeholder="Ko8o4@example.com"
-            className="w-full px-3 py-2 rounded-sm bg-[#232323] text-white border border-[#333333] focus:outline-none focus:border-blue-500 text-sm"
+            placeholder="you@example.com"
+            autoComplete="email"
+            className="text-[#0A0A0A]"
           />
         </div>
 
         <div>
           <label
             htmlFor="password"
-            className="block text-xs font-medium text-gray-400 mb-1.5"
+            className="block text-xs font-medium text-neutral-600 mb-1.5"
           >
             Password
           </label>
-          <input
+          <Input
             type="password"
             id="password"
             name="password"
             placeholder="••••••••"
-            className="w-full px-3 py-2 rounded-sm bg-[#232323] text-white border border-[#333333] focus:outline-none focus:border-blue-500 text-sm"
+            autoComplete="current-password"
+            className="text-[#0A0A0A]"
           />
         </div>
 
-        <div className="flex justify-between text-xs mt-1">
+        <div className="flex justify-between text-xs mt-1 text-neutral-500">
           <Link
             href="forgot-password"
-            className="text-gray-400 hover:text-blue-400 transition-colors"
+            className="hover:text-[#0A0A0A] transition-colors"
           >
             Forgot password?
           </Link>
           <Link
             href="signup"
-            className="text-gray-400 hover:text-blue-400  transition-colors"
+            className="hover:text-[#0A0A0A] transition-colors"
           >
             Create account
           </Link>
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 text-white font-medium py-2 px-3 text-sm rounded-sm hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors mt-2"
+          size="form"
+          className="w-full bg-[#0A0A0A] text-white font-medium rounded-lg hover:bg-[#1d1d1d] focus-visible:ring-[#0A0A0A]/15 transition-colors mt-2 shadow-[0_14px_34px_rgba(0,0,0,0.12)] disabled:opacity-80"
         >
           {isPending ? <Loading /> : "Sign in"}
-        </button>
+        </Button>
       </Form>
-      <div className="mt-8 pt-6 border-t border-[#2a2a2a]">
-        <p className="text-xs text-center text-gray-500 mb-4">
+      <div className="mt-8 pt-6 border-t border-neutral-100">
+        <p className="text-xs text-center text-neutral-500 mb-4">
           Or continue with
         </p>
         <div className="flex justify-between space-x-3">
-          <button
+          <Button
+            type="button"
+            variant="outline"
+            size="form"
             onClick={async () => {
               await signInWithGoogle();
             }}
-            className="flex items-center justify-center w-full bg-[#232323] hover:bg-[#282828] text-white text-sm py-2 rounded-sm border border-[#333333] transition-colors"
+            className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >
-            <Image
-              src="/google.svg"
-              alt="Google"
-              width={16}
-              height={16}
-              className="mr-2"
-            />
+            <Google className="mr-2" size={16} />
             Google
-          </button>
-          <button
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="form"
             onClick={async () => {
               await signInWithGithub();
             }}
-            className="flex items-center justify-center w-full bg-[#232323] hover:bg-[#282828] text-white text-sm py-2 rounded-sm border border-[#333333] transition-colors"
+            className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >
-            <Image
-              src="/github.svg"
-              alt="Github"
-              width={16}
-              height={16}
-              className="mr-2"
-            />
+            <GitHubDark className="mr-2" size={16} />
             GitHub
-          </button>
+          </Button>
         </div>
       </div>
     </>

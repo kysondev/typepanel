@@ -1,5 +1,4 @@
 "use client";
-import { verifyOTP } from "features/core/auth/actions/auth.action";
 import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import { useEffect, useRef, useState, useTransition } from "react";
@@ -64,9 +63,7 @@ const OTPForm = ({ onCancel }: OTPFormProps) => {
 
       <Form
         action={async () => {
-          startTransition(async () => {
-            await verifyOTP(otp);
-          });
+          startTransition(async () => {});
         }}
         className="space-y-5"
       >

@@ -1,5 +1,4 @@
 "use client";
-import { forgotPassword, signUp } from "features/core/auth/actions/auth.action";
 import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import { useTransition } from "react";
@@ -10,9 +9,7 @@ const ForgotPasswordForm = () => {
     <>
       <Form
         action={async (formData) => {
-          startTransition(async () => {
-            await forgotPassword(formData);
-          });
+          startTransition(async () => {});
         }}
         className="space-y-5"
       >

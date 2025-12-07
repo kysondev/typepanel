@@ -1,5 +1,4 @@
 "use client";
-import { resetPassword } from "features/core/auth/actions/auth.action";
 import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import { redirect, useSearchParams } from "next/navigation";
@@ -21,9 +20,7 @@ const ResetPasswordForm = () => {
     <>
       <Form
         action={async (formData) => {
-          startTransition(async () => {
-            await resetPassword(formData, token as string);
-          });
+          startTransition(async () => {});
         }}
         className="space-y-5"
       >
