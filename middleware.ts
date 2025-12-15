@@ -30,6 +30,21 @@ async function getSession(request: NextRequest) {
   }
 }
 
+async function hasAdminUser() {
+  try {
+    const url = new URL(
+      "/api/admin/check-exist",
+      process.env.NEXT_PUBLIC_APP_URL
+    );
+    const req = await fetch(url);
+    const res = await req.json();
+    return res.adminExist;
+  } catch (err) {
+    console.error("Admin fetch error:", err);
+    return false;
+  }
+}
+
 export default async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
@@ -45,6 +60,10 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/", request.url));
       }
     } else {
+      const adminExists = await hasAdminUser();
+      if (!adminExists && currentPath !== "/auth/admin-setup") {
+        return NextResponse.redirect(new URL("/auth/admin-setup", request.url));
+      }
       if (!isAuthRoute) {
         return NextResponse.redirect(new URL("/auth/login", request.url));
       }

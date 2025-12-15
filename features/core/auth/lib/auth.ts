@@ -1,16 +1,15 @@
+import { db } from "@common/lib/db";
 import argon2 from "argon2";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin } from "better-auth/plugins";
-import { PrismaClient } from "generated/prisma-client";
 
-const prisma = new PrismaClient();
 export const auth = betterAuth({
   appName: "TypePanel",
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
-  }),
+  database: {
+    db: db,
+  },
   advanced: {
     cookiePrefix: "TypePanel",
   },
