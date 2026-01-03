@@ -56,9 +56,6 @@ export default function Page() {
               <div className="border-b border-neutral-200 px-8 py-6">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="font-semibold text-primary">Admin account</h2>
-                  <span className="rounded-full bg-neutral-900 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-white">
-                    Step 1
-                  </span>
                 </div>
                 <p className="text-sm text-neutral-500">
                   This admin owns the workspace, manages billing, and will be

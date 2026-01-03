@@ -64,6 +64,9 @@ export default async function middleware(request: NextRequest) {
       if (!adminExists && currentPath !== "/auth/admin-setup") {
         return NextResponse.redirect(new URL("/auth/admin-setup", request.url));
       }
+      if (adminExists && currentPath === "/auth/admin-setup") {
+        return NextResponse.redirect(new URL("/auth/login", request.url));
+      }
       if (!isAuthRoute) {
         return NextResponse.redirect(new URL("/auth/login", request.url));
       }

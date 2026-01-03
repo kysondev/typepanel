@@ -1,9 +1,22 @@
+"use client";
+import { adminSignUp } from "features/core/auth/actions/auth.action";
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
+import { Loading } from "features/common/components/ui/loading";
+import Form from "next/form";
+import { useTransition } from "react";
 
 const AdminSetupForm = () => {
+  const [isPending, startTransition] = useTransition();
   return (
-    <form className="space-y-5">
+    <Form
+      action={async (formData) => {
+        startTransition(async () => {
+          await adminSignUp(formData);
+        });
+      }}
+      className="space-y-5"
+    >
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label
@@ -22,14 +35,14 @@ const AdminSetupForm = () => {
         </div>
         <div>
           <label
-            htmlFor="adminName"
+            htmlFor="name"
             className="mb-1.5 block text-xs font-medium text-neutral-600"
           >
             Admin name
           </label>
           <Input
-            id="adminName"
-            name="adminName"
+            id="name"
+            name="name"
             placeholder="Alex Doe"
             autoComplete="name"
             className="text-[#0A0A0A]"
@@ -39,15 +52,15 @@ const AdminSetupForm = () => {
 
       <div>
         <label
-          htmlFor="adminEmail"
+          htmlFor="email"
           className="mb-1.5 block text-xs font-medium text-neutral-600"
         >
           Admin email
         </label>
         <Input
           type="email"
-          id="adminEmail"
-          name="adminEmail"
+          id="email"
+          name="email"
           placeholder="you@example.com"
           autoComplete="email"
           className="text-[#0A0A0A]"
@@ -95,13 +108,14 @@ const AdminSetupForm = () => {
       </div>
 
       <Button
-        type="button"
+        type="submit"
+        disabled={isPending}
         size="form"
         className="mt-1 w-full rounded-lg bg-[#0A0A0A] text-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] transition-colors hover:bg-[#1d1d1d] focus-visible:ring-[#0A0A0A]/15 disabled:opacity-80"
       >
-        Create admin account
+        {isPending ? <Loading /> : "Create admin account"}
       </Button>
-    </form>
+    </Form>
   );
 };
 

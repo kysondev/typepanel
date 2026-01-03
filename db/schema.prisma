@@ -13,43 +13,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+
+  @@map("workspace")
+}
+
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  emailVerified Boolean   @default(false)
-  image         String?
-  role          ROLE      @default(user)
-  usernameSet   Boolean   @default(false)
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id               String        @id @default(cuid())
+  email            String        @unique
+  name             String?
+  emailVerified    Boolean       @default(false)
+  image            String?
+  role             ROLE          @default(user)
+  createdAt        DateTime
+  updatedAt        DateTime
   twoFactorEnabled Boolean?
   banned           Boolean?
   banReason        String?
   banExpires       DateTime?
-  twofactors       TwoFactor[]
+  workspaceId      String?
+  accounts         Account[]
   chatbot          Chatbot[]
   chatSession      ChatSession[]
+  sessions         Session[]
+  twofactors       TwoFactor[]
+  workspace        Workspace?    @relation(fields: [workspaceId], references: [id])
 
   @@map("user")
 }
 
 model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime
-  updatedAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id             String   @id
+  expiresAt      DateTime
+  token          String   @unique
+  createdAt      DateTime
+  updatedAt      DateTime
+  ipAddress      String?
+  userAgent      String?
+  userId         String
   impersonatedBy String?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@map("session")
 }
 
@@ -58,7 +67,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -68,6 +76,7 @@ model Account {
   password              String?
   createdAt             DateTime
   updatedAt             DateTime
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -93,11 +102,6 @@ model TwoFactor {
   @@map("twoFactor")
 }
 
-enum ROLE {
-  user
-  admin
-}
-
 model ModelProvider {
   id          String   @id @default(cuid())
   name        String
@@ -112,88 +116,93 @@ model ModelProvider {
 }
 
 model Model {
-  id             String   @id @default(cuid())
-  name           String
-  displayName    String?
-  contextLength  Int?
-  temperature    Float?
-  inputCost      Float?
-  outputCost     Float?
-  providerId     String
-  provider       ModelProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  chatbots       Chatbot[]
+  id            String        @id @default(cuid())
+  name          String
+  displayName   String?
+  contextLength Int?
+  temperature   Float?
+  inputCost     Float?
+  outputCost    Float?
+  providerId    String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  chatbots      Chatbot[]
+  provider      ModelProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
   @@map("model")
 }
 
 model Chatbot {
-  id           String   @id @default(cuid())
-  ownerId      String
-  owner        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  modelId      String
-  model        Model    @relation(fields: [modelId], references: [id], onDelete: Restrict)
-  name         String
-  description  String?
-  systemPrompt String   @default("")
-  isPublic     Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  sessions     ChatSession[]
+  id             String          @id @default(cuid())
+  ownerId        String
+  modelId        String
+  name           String
+  description    String?
+  systemPrompt   String          @default("")
+  isPublic       Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  model          Model           @relation(fields: [modelId], references: [id])
+  owner          User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  sessions       ChatSession[]
   knowledgeBases KnowledgeBase[]
 
   @@map("chatBot")
 }
 
 model ChatSession {
-  id         String   @id @default(cuid())
-  chatbotId  String
-  chatbot    Chatbot  @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
-  userId     String?
-  user       User?    @relation(fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  messages   ChatMessage[]
+  id        String        @id @default(cuid())
+  chatbotId String
+  userId    String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  messages  ChatMessage[]
+  chatbot   Chatbot       @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
+  user      User?         @relation(fields: [userId], references: [id])
 
   @@map("chatSession")
 }
 
 model ChatMessage {
-  id         String   @id @default(cuid())
-  sessionId  String
-  session    ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  role       ChatRole
-  content    String
-  createdAt  DateTime @default(now())
+  id        String      @id @default(cuid())
+  sessionId String
+  role      ChatRole
+  content   String
+  createdAt DateTime    @default(now())
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@map("chatMessage")
 }
 
-enum ChatRole {
-    user
-    assistant
-    system
-}
-
 model KnowledgeBase {
-  id         String   @id @default(cuid())
-  chatbotId  String
-  chatbot    Chatbot  @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
-  name       String
-  createdAt  DateTime @default(now())
-  documents  KnowledgeDocument[]
+  id        String              @id @default(cuid())
+  chatbotId String
+  name      String
+  createdAt DateTime            @default(now())
+  chatbot   Chatbot             @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
+  documents KnowledgeDocument[]
 
   @@map("knowledgeBase")
 }
 
 model KnowledgeDocument {
-  id          String   @id @default(cuid())
-  kbId        String
-  kb          KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
-  filename    String
-  content     String
-  createdAt   DateTime @default(now())
+  id        String        @id @default(cuid())
+  kbId      String
+  filename  String
+  content   String
+  createdAt DateTime      @default(now())
+  kb        KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
 
   @@map("knowledgeDocument")
+}
+
+enum ROLE {
+  user
+  admin
+}
+
+enum ChatRole {
+  user
+  assistant
+  system
 }
