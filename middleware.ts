@@ -51,11 +51,15 @@ export default async function middleware(request: NextRequest) {
     currentPath.startsWith(route)
   );
   const isAuthRoute = AUTH_ROUTES.includes(currentPath);
+  const isAdminRoute = currentPath.startsWith("/admin");
 
   if (isProtectedRoute || isAuthRoute) {
     const session = await getSession(request);
 
     if (session) {
+      if (isAdminRoute && session.user?.role !== "admin") {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
       if (AUTH_ROUTES.includes(currentPath)) {
         return NextResponse.redirect(new URL("/", request.url));
       }
