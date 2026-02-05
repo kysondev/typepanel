@@ -83,10 +83,7 @@ const LoginForm = () => {
           {isPending ? <Loading /> : "Sign in"}
         </Button>
       </Form>
-      <div className="mt-8 pt-6 border-t border-neutral-100">
-        <p className="text-xs text-center text-neutral-500 mb-4">
-          Or continue with
-        </p>
+      <div className="mt-6 border-t border-neutral-100 pt-6">
         <div className="flex justify-between space-x-3">
           <Button
             type="button"
