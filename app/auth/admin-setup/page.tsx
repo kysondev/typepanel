@@ -1,4 +1,4 @@
-import AdminSetupForm from "features/core/auth/components/AdminSetupForm";
+import AdminSetupForm from "@auth/components/admin-setup-form";
 
 export default function Page() {
   return (

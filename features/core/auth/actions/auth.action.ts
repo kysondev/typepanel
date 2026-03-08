@@ -70,19 +70,19 @@ export const adminSignUp = async (formData: FormData) => {
         result.data.name,
         result.data.email,
         result.data.password,
-        workspaceName
+        workspaceName,
       );
     if (!adminSuccess) {
       toast.error(adminMessage);
       return;
     }
     toast.success("Admin account created successfully");
-    redirect("/auth/login");
   } catch (error) {
     toast.error(
-      error instanceof Error ? error.message : "Something went wrong"
+      error instanceof Error ? error.message : "Something went wrong",
     );
   }
+  redirect("/auth/login");
 };
 
 export const signInWithEmail = async (formData: FormData) => {
