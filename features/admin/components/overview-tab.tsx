@@ -1,12 +1,12 @@
 import { Button } from "@common/components/ui/button";
 import { Cpu, Database, Plus, Users } from "lucide-react";
+import { getAdminStats } from "features/admin/actions/admin.action";
 
-export default function OverviewTab() {
-  const stats = [
-    { label: "Total Users", value: "6,969", icon: Users },
-    { label: "Models Created", value: "69", icon: Cpu },
-    { label: "Total Messages", value: "69k", icon: Database },
-  ];
+export default async function OverviewTab() {
+  const statsRes = await getAdminStats();
+  const data = statsRes.success
+    ? statsRes.data
+    : { users: 0, models: 0, messages: 0 };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -25,24 +25,53 @@ export default function OverviewTab() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm"
-          >
-            <div className="flex items-center gap-4">
-              <div className="text-neutral-400">
-                <stat.icon size={24} strokeWidth={1.5} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-neutral-500">
-                  {stat.label}
-                </p>
-                <p className="text-2xl font-bold mt-0.5">{stat.value}</p>
-              </div>
+        <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="text-neutral-400">
+              <Users size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-500">
+                Total Users
+              </p>
+              <p className="text-2xl font-bold mt-0.5">
+                {data?.users.toLocaleString()}
+              </p>
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="text-neutral-400">
+              <Cpu size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-500">
+                Models Created
+              </p>
+              <p className="text-2xl font-bold mt-0.5">
+                {data?.models.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="text-neutral-400">
+              <Database size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-500">
+                Total Messages
+              </p>
+              <p className="text-2xl font-bold mt-0.5">
+                {data?.messages.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
