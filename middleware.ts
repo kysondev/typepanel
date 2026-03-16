@@ -6,7 +6,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 async function getSession(request: NextRequest) {
   try {
-    const url = new URL("/api/auth/get-session", request.url);
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+    const url = new URL("/api/auth/get-session", baseUrl);
     const req = await fetch(url, {
       headers: {
         cookie: request.headers.get("cookie") ?? "",
@@ -30,12 +31,10 @@ async function getSession(request: NextRequest) {
   }
 }
 
-async function hasAdminUser() {
+async function hasAdminUser(request: NextRequest) {
   try {
-    const url = new URL(
-      "/api/admin/check-exist",
-      process.env.NEXT_PUBLIC_APP_URL
-    );
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+    const url = new URL("/api/admin/check-exist", baseUrl);
     const req = await fetch(url);
     const res = await req.json();
     return res.adminExist;
@@ -48,12 +47,12 @@ async function hasAdminUser() {
 export default async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
-    currentPath.startsWith(route)
+    currentPath === route || currentPath.startsWith(`${route}/`)
   );
   const isAuthRoute = AUTH_ROUTES.includes(currentPath);
-  const isAdminRoute = currentPath.startsWith("/admin");
+  const isAdminRoute = currentPath === "/admin" || currentPath.startsWith("/admin/");
 
-  if (isProtectedRoute || isAuthRoute) {
+  if (isProtectedRoute || isAuthRoute || isAdminRoute) {
     const session = await getSession(request);
 
     if (session) {
@@ -64,7 +63,7 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/", request.url));
       }
     } else {
-      const adminExists = await hasAdminUser();
+      const adminExists = await hasAdminUser(request);
       if (!adminExists && currentPath !== "/auth/admin-setup") {
         return NextResponse.redirect(new URL("/auth/admin-setup", request.url));
       }
