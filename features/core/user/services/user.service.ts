@@ -26,7 +26,7 @@ export const getPaginatedUsers = async (
       db
         .selectFrom("user")
         .select(["id", "name", "email", "role", "createdAt"])
-        .orderBy("role", "asc")
+        .orderBy("role", "desc")
         .orderBy("createdAt", "desc")
         .limit(limit)
         .offset(offset)
