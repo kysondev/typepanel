@@ -1,15 +1,21 @@
-import { MoreVertical, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { getUsers } from "features/admin/actions/user.action";
 import { Button } from "features/common/components/ui/button";
 import Link from "next/link";
+import UserActionMenu from "./user-action-menu";
+import { getUser } from "features/core/auth/services/user.service";
 
 export default async function UsersTab({ page = 1 }: { page?: number }) {
   const limit = 10;
-  const usersRes = await getUsers(page, limit);
+  const [usersRes, currentUserRes] = await Promise.all([
+    getUsers(page, limit),
+    getUser(),
+  ]);
 
   const users = usersRes.success ? (usersRes.data?.users ?? []) : [];
   const totalPages = usersRes.success ? (usersRes.data?.totalPages ?? 1) : 1;
   const totalCount = usersRes.success ? (usersRes.data?.totalCount ?? 0) : 0;
+  const currentUser = currentUserRes.success ? currentUserRes.data : null;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -32,7 +38,7 @@ export default async function UsersTab({ page = 1 }: { page?: number }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-visible">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-neutral-100 bg-neutral-50/50">
@@ -79,9 +85,7 @@ export default async function UsersTab({ page = 1 }: { page?: number }) {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right pr-8">
-                    <button className="text-neutral-400 hover:text-[#0A0A0A] transition-colors p-1 rounded-md hover:bg-neutral-100">
-                      <MoreVertical size={18} />
-                    </button>
+                    <UserActionMenu user={user} currentUser={currentUser} />
                   </td>
                 </tr>
               ))
