@@ -104,32 +104,18 @@ model TwoFactor {
   @@map("twoFactor")
 }
 
-model ModelProvider {
-  id          String   @id @default(cuid())
-  name        String
-  providerKey String
-  apiKeyEnc   String
-  baseUrl     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  models      Model[]
-
-  @@map("modelProvider")
-}
-
 model Model {
-  id            String        @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
   displayName   String?
   contextLength Int?
   temperature   Float?
-  inputCost     Float?
-  outputCost    Float?
-  providerId    String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  provider      String // gpt, gemini, etc.
+  apiKeyEnc     String?
+  baseUrl       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   chatbots      Chatbot[]
-  provider      ModelProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
   @@map("model")
 }
@@ -188,13 +174,13 @@ model KnowledgeBase {
 }
 
 model KnowledgeDocument {
-  id        String        @id @default(cuid())
+  id        String                       @id @default(cuid())
   kbId      String
   filename  String
   content   String
   embedding Unsupported("vector(1536)")?
-  createdAt DateTime      @default(now())
-  kb        KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  createdAt DateTime                     @default(now())
+  kb        KnowledgeBase                @relation(fields: [kbId], references: [id], onDelete: Cascade)
 
   @@map("knowledgeDocument")
 }
