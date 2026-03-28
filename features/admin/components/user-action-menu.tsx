@@ -5,6 +5,7 @@ import { MoreVertical, Settings, ArrowUp, ArrowDown } from "lucide-react";
 import { promoteUser, demoteUser } from "features/admin/actions/user.action";
 import { toast } from "react-hot-toast";
 import { ConfirmModal } from "features/common/components/ui/confirm-modal";
+import { EditUserModal } from "features/common/components/ui/edit-user-modal";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -25,6 +26,7 @@ export default function UserActionMenu({
   const [isLoading, setIsLoading] = useState(false);
   const [showPromoteModal, setShowPromoteModal] = useState(false);
   const [showDemoteModal, setShowDemoteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isTargetAdmin = user.role === "admin";
@@ -86,6 +88,10 @@ export default function UserActionMenu({
           <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-neutral-200 shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100 origin-top-right">
             <div className="py-1">
               <button
+                onClick={() => {
+                  setShowEditModal(true);
+                  setIsOpen(false);
+                }}
                 disabled={isDisabled || isLoading}
                 className={`flex w-full items-center px-4 py-2 text-sm transition-colors ${
                   isDisabled
@@ -149,6 +155,14 @@ export default function UserActionMenu({
         variant="destructive"
         isLoading={isLoading}
       />
+
+      {showEditModal && (
+        <EditUserModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          user={user}
+        />
+      )}
     </>
   );
 }

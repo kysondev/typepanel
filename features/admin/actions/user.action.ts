@@ -42,3 +42,25 @@ export const demoteUser = async (userId: string) => {
     return { success: false, message: "Failed to demote user" };
   }
 };
+
+export const updateUser = async (userId: string, data: { name?: string; email?: string }) => {
+  try {
+    const { error } = await authClient.admin.updateUser({
+      userId,
+      data: {
+        name: data.name,
+        email: data.email,
+      },
+    });
+
+    if (error) {
+      console.error("Failed to update user:", error);
+      return { success: false, message: error.message || "Failed to update user" };
+    }
+
+    return { success: true, message: "User updated successfully" };
+  } catch (error) {
+    console.error("Failed to update user:", error);
+    return { success: false, message: "Failed to update user" };
+  }
+};
