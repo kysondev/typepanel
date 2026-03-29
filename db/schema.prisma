@@ -40,7 +40,6 @@ model User {
   banExpires       DateTime?
   workspaceId      String?
   accounts         Account[]
-  chatbot          Chatbot[]
   chatSession      ChatSession[]
   sessions         Session[]
   twofactors       TwoFactor[]
@@ -104,34 +103,23 @@ model TwoFactor {
   @@map("twoFactor")
 }
 
-model Model {
+model Chatbot {
   id            String    @id @default(cuid())
   name          String
-  displayName   String?
-  contextLength Int?
-  temperature   Float?
-  provider      String // gpt, gemini, etc.
+  description   String?
+  systemPrompt  String    @default("")
+  isPublic      Boolean   @default(false)
+  
+  model         String
+  provider      String
   apiKeyEnc     String?
   baseUrl       String?
+  temperature   Float?
+  contextLength Int?
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  chatbots      Chatbot[]
-
-  @@map("model")
-}
-
-model Chatbot {
-  id             String          @id @default(cuid())
-  ownerId        String
-  modelId        String
-  name           String
-  description    String?
-  systemPrompt   String          @default("")
-  isPublic       Boolean         @default(false)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  model          Model           @relation(fields: [modelId], references: [id])
-  owner          User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
   sessions       ChatSession[]
   knowledgeBases KnowledgeBase[]
 

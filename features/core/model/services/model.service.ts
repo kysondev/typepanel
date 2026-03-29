@@ -5,7 +5,7 @@ import { db } from "@common/lib/db";
 export const getModelCount = async () => {
   try {
     const result = await db
-      .selectFrom("model")
+      .selectFrom("chatBot")
       .select((eb) => eb.fn.count("id").as("count"))
       .executeTakeFirst();
     return Number(result?.count ?? 0);
