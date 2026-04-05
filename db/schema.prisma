@@ -108,6 +108,7 @@ model Chatbot {
   name          String
   description   String?
   systemPrompt  String    @default("")
+  tone          String    @default("professional")
   isPublic      Boolean   @default(false)
   
   model         String

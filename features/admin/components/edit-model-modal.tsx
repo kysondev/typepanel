@@ -22,11 +22,19 @@ export function EditModelModal({
   model,
 }: EditModelModalProps) {
   const [name, setName] = useState("");
+  const [systemPrompt, setSystemPrompt] = useState("");
+  const [tone, setTone] = useState("professional");
+  const [temperature, setTemperature] = useState(0.7);
+  const [contextLength, setContextLength] = useState(4096);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (model) {
       setName(model.name);
+      setSystemPrompt(model.systemPrompt || "");
+      setTone(model.tone || "professional");
+      setTemperature(model.temperature ?? 0.7);
+      setContextLength(model.contextLength ?? 4096);
     }
   }, [model]);
 
@@ -35,7 +43,13 @@ export function EditModelModal({
     if (!name) return;
 
     setIsLoading(true);
-    const res = await updateModel(model.id, { name });
+    const res = await updateModel(model.id, {
+      name,
+      systemPrompt,
+      tone,
+      temperature,
+      contextLength,
+    });
     setIsLoading(false);
 
     if (res.success) {
@@ -46,6 +60,15 @@ export function EditModelModal({
       toast.error(res.message);
     }
   };
+
+  const tones = [
+    { value: "professional", label: "Professional & Sharp" },
+    { value: "friendly", label: "Warm & Helpful" },
+    { value: "humorous", label: "Playful & Witty" },
+    { value: "concise", label: "Short & Direct" },
+    { value: "creative", label: "Creative & Bold" },
+    { value: "empathetic", label: "Kind & Supportive" },
+  ];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="lg">
@@ -63,15 +86,75 @@ export function EditModelModal({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-neutral-700">
+                Display Name
+              </label>
+              <Input
+                placeholder="e.g. My Custom GPT"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-neutral-700">Tone</label>
+              <select
+                className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition"
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}
+              >
+                {tones.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-neutral-700 flex justify-between items-center">
+                Temperature
+                <span className="text-xs font-mono text-neutral-400">
+                  {temperature}
+                </span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="0.1"
+                className="w-full h-2 bg-neutral-100 rounded-lg appearance-none cursor-pointer accent-neutral-900"
+                value={temperature}
+                onChange={(e) => setTemperature(parseFloat(e.target.value))}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-neutral-700">
+                Context Length
+              </label>
+              <Input
+                type="number"
+                placeholder="e.g. 4096"
+                value={contextLength}
+                onChange={(e) => setContextLength(parseInt(e.target.value))}
+                required
+              />
+            </div>
+          </div>
+
           <div className="space-y-1.5">
             <label className="text-sm font-bold text-neutral-700">
-              Display Name
+              System Prompt
             </label>
-            <Input
-              placeholder="e.g. My Custom GPT"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
+            <textarea
+              className="w-full min-h-[120px] rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition resize-none"
+              placeholder="Define how the AI should behave..."
+              value={systemPrompt}
+              onChange={(e) => setSystemPrompt(e.target.value)}
             />
           </div>
 

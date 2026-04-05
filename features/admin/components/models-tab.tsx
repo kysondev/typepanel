@@ -97,9 +97,6 @@ export default function ModelsTab() {
                   <div className="p-2 bg-neutral-50 rounded-lg">
                     <Cpu size={20} className="text-neutral-600" />
                   </div>
-                  <button className="text-neutral-400 hover:text-neutral-900 transition-colors">
-                    <MoreVertical size={18} />
-                  </button>
                 </div>
                 <h3 className="text-lg font-bold text-neutral-900">
                   {model.name}
@@ -167,7 +164,7 @@ export default function ModelsTab() {
                 Connect New Model
               </p>
               <p className="text-xs text-neutral-500 mt-1">
-                Add GPT or Gemini models
+                Connect your preferred AI provider
               </p>
             </div>
           </button>

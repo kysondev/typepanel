@@ -51,12 +51,25 @@ export const deleteModel = async (id: string) => {
   }
 };
 
-export const updateModel = async (id: string, data: { name: string }) => {
+export const updateModel = async (
+  id: string,
+  data: {
+    name: string;
+    systemPrompt?: string;
+    tone?: string;
+    temperature?: number;
+    contextLength?: number;
+  }
+) => {
   try {
     await db
       .updateTable("chatBot")
       .set({
         name: data.name,
+        systemPrompt: data.systemPrompt ?? "",
+        tone: data.tone ?? "professional",
+        temperature: data.temperature ?? 0.7,
+        contextLength: data.contextLength ?? 4096,
         updatedAt: new Date(),
       })
       .where("id", "=", id)
