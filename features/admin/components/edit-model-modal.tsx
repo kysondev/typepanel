@@ -62,12 +62,12 @@ export function EditModelModal({
   };
 
   const tones = [
-    { value: "professional", label: "Professional & Sharp" },
-    { value: "friendly", label: "Warm & Helpful" },
-    { value: "humorous", label: "Playful & Witty" },
-    { value: "concise", label: "Short & Direct" },
-    { value: "creative", label: "Creative & Bold" },
-    { value: "empathetic", label: "Kind & Supportive" },
+    { value: "professional", label: "Professional" },
+    { value: "friendly", label: "Friendly" },
+    { value: "playful", label: "Playful" },
+    { value: "concise", label: "Concise" },
+    { value: "creative", label: "Creative" },
+    { value: "supportive", label: "Supportive" },
   ];
 
   return (

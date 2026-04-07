@@ -1,5 +1,4 @@
 import { authClient } from "@auth/lib/auth-client";
-import { db } from "@common/lib/db";
 import { getPaginatedUsers } from "features/core/user/services/user.service";
 
 export const getUsers = async (page: number = 1, limit: number = 10) => {
@@ -43,7 +42,10 @@ export const demoteUser = async (userId: string) => {
   }
 };
 
-export const updateUser = async (userId: string, data: { name?: string; email?: string }) => {
+export const updateUser = async (
+  userId: string,
+  data: { name?: string; email?: string },
+) => {
   try {
     const { error } = await authClient.admin.updateUser({
       userId,
@@ -55,7 +57,10 @@ export const updateUser = async (userId: string, data: { name?: string; email?: 
 
     if (error) {
       console.error("Failed to update user:", error);
-      return { success: false, message: error.message || "Failed to update user" };
+      return {
+        success: false,
+        message: error.message || "Failed to update user",
+      };
     }
 
     return { success: true, message: "User updated successfully" };

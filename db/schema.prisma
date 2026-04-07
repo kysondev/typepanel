@@ -152,12 +152,14 @@ model ChatMessage {
 }
 
 model KnowledgeBase {
-  id        String              @id @default(cuid())
-  chatbotId String
-  name      String
-  createdAt DateTime            @default(now())
-  chatbot   Chatbot             @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
-  documents KnowledgeDocument[]
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  chatbotId   String?
+  chatbot     Chatbot?            @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
+  documents   KnowledgeDocument[]
 
   @@map("knowledgeBase")
 }
