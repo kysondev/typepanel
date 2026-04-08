@@ -1,14 +1,10 @@
 "use server";
 
-import { db } from "@common/lib/db";
+import * as modelService from "features/core/model/services/model.service";
 
 export const getModels = async () => {
   try {
-    const models = await db
-      .selectFrom("chatBot")
-      .selectAll()
-      .orderBy("createdAt", "desc")
-      .execute();
+    const models = await modelService.getModels();
     return { success: true, data: models };
   } catch (error) {
     console.error("Failed to fetch models:", error);
@@ -23,17 +19,7 @@ export const createModel = async (data: {
   apiKeyEnc: string;
 }) => {
   try {
-    await db
-      .insertInto("chatBot")
-      .values({
-        id: crypto.randomUUID(),
-        name: data.name,
-        model: data.model,
-        provider: data.provider,
-        apiKeyEnc: data.apiKeyEnc,
-        updatedAt: new Date(),
-      })
-      .execute();
+    await modelService.createModel(data);
     return { success: true, message: "Model created successfully" };
   } catch (error) {
     console.error("Failed to create model:", error);
@@ -43,7 +29,7 @@ export const createModel = async (data: {
 
 export const deleteModel = async (id: string) => {
   try {
-    await db.deleteFrom("chatBot").where("id", "=", id).execute();
+    await modelService.deleteModel(id);
     return { success: true, message: "Model deleted successfully" };
   } catch (error) {
     console.error("Failed to delete model:", error);
@@ -59,21 +45,10 @@ export const updateModel = async (
     tone?: string;
     temperature?: number;
     contextLength?: number;
-  }
+  },
 ) => {
   try {
-    await db
-      .updateTable("chatBot")
-      .set({
-        name: data.name,
-        systemPrompt: data.systemPrompt ?? "",
-        tone: data.tone ?? "professional",
-        temperature: data.temperature ?? 0.7,
-        contextLength: data.contextLength ?? 4096,
-        updatedAt: new Date(),
-      })
-      .where("id", "=", id)
-      .execute();
+    await modelService.updateModel(id, data);
     return { success: true, message: "Model updated successfully" };
   } catch (error) {
     console.error("Failed to update model:", error);

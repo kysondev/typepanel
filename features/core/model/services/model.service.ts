@@ -14,3 +14,66 @@ export const getModelCount = async () => {
     return 0;
   }
 };
+
+export const getModels = async () => {
+  return await db
+    .selectFrom("chatBot")
+    .selectAll()
+    .orderBy("createdAt", "desc")
+    .execute();
+};
+
+export const createModel = async (data: {
+  name: string;
+  model: string;
+  provider: string;
+  apiKeyEnc: string;
+}) => {
+  return await db
+    .insertInto("chatBot")
+    .values({
+      id: crypto.randomUUID(),
+      name: data.name,
+      model: data.model,
+      provider: data.provider,
+      apiKeyEnc: data.apiKeyEnc,
+      updatedAt: new Date(),
+    })
+    .execute();
+};
+
+export const deleteModel = async (id: string) => {
+  return await db.deleteFrom("chatBot").where("id", "=", id).execute();
+};
+
+export const updateModel = async (
+  id: string,
+  data: {
+    name: string;
+    systemPrompt?: string;
+    tone?: string;
+    temperature?: number;
+    contextLength?: number;
+  },
+) => {
+  return await db
+    .updateTable("chatBot")
+    .set({
+      name: data.name,
+      systemPrompt: data.systemPrompt ?? "",
+      tone: data.tone ?? "professional",
+      temperature: data.temperature ?? 0.7,
+      contextLength: data.contextLength ?? 4096,
+      updatedAt: new Date(),
+    })
+    .where("id", "=", id)
+    .execute();
+};
+
+export const getModelById = async (id: string) => {
+  return await db
+    .selectFrom("chatBot")
+    .selectAll()
+    .where("id", "=", id)
+    .executeTakeFirst();
+};

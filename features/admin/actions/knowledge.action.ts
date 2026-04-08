@@ -1,22 +1,11 @@
 "use server";
 
-import { db } from "@common/lib/db";
-import { ingestDocument } from "features/core/knowledge/services/knowledge.service";
+import * as knowledgeService from "features/core/knowledge/services/knowledge.service";
+import * as modelService from "features/core/model/services/model.service";
 
 export const getKnowledgeBases = async () => {
   try {
-    const kbs = await db
-      .selectFrom("knowledgeBase")
-      .selectAll()
-      .select((eb) => [
-        eb
-          .selectFrom("knowledgeDocument")
-          .select(eb.fn.count("id").as("count"))
-          .whereRef("knowledgeDocument.kbId", "=", "knowledgeBase.id")
-          .as("documentCount"),
-      ])
-      .orderBy("createdAt", "desc")
-      .execute();
+    const kbs = await knowledgeService.getKnowledgeBases();
     return { success: true, data: kbs };
   } catch (error) {
     console.error("Failed to fetch knowledge bases:", error);
@@ -30,17 +19,7 @@ export const createKnowledgeBase = async (data: {
   chatbotId: string;
 }) => {
   try {
-    const kb = await db
-      .insertInto("knowledgeBase")
-      .values({
-        id: crypto.randomUUID(),
-        name: data.name,
-        description: data.description || null,
-        chatbotId: data.chatbotId,
-        updatedAt: new Date(),
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow();
+    const kb = await knowledgeService.createKnowledgeBase(data);
     return {
       success: true,
       message: "Collection created successfully",
@@ -54,7 +33,7 @@ export const createKnowledgeBase = async (data: {
 
 export const deleteKnowledgeBase = async (id: string) => {
   try {
-    await db.deleteFrom("knowledgeBase").where("id", "=", id).execute();
+    await knowledgeService.deleteKnowledgeBase(id);
     return { success: true, message: "Collection deleted successfully" };
   } catch (error) {
     console.error("Failed to delete knowledge base:", error);
@@ -67,15 +46,7 @@ export const updateKnowledgeBase = async (
   data: { name: string; description?: string },
 ) => {
   try {
-    await db
-      .updateTable("knowledgeBase")
-      .set({
-        name: data.name,
-        description: data.description || null,
-        updatedAt: new Date(),
-      })
-      .where("id", "=", id)
-      .execute();
+    await knowledgeService.updateKnowledgeBase(id, data);
     return { success: true, message: "Collection updated successfully" };
   } catch (error) {
     console.error("Failed to update knowledge base:", error);
@@ -85,11 +56,7 @@ export const updateKnowledgeBase = async (
 
 export const getKnowledgeBaseById = async (id: string) => {
   try {
-    const kb = await db
-      .selectFrom("knowledgeBase")
-      .selectAll()
-      .where("id", "=", id)
-      .executeTakeFirst();
+    const kb = await knowledgeService.getKnowledgeBaseById(id);
     return { success: true, data: kb };
   } catch (error) {
     console.error("Failed to fetch knowledge base:", error);
@@ -103,11 +70,7 @@ export const addTextToKnowledgeBase = async (
   content: string,
 ) => {
   try {
-    const kb = await db
-      .selectFrom("knowledgeBase")
-      .select("chatbotId")
-      .where("id", "=", kbId)
-      .executeTakeFirst();
+    const kb = await knowledgeService.getKnowledgeBaseById(kbId);
 
     if (!kb?.chatbotId) {
       return {
@@ -117,11 +80,7 @@ export const addTextToKnowledgeBase = async (
       };
     }
 
-    const model = await db
-      .selectFrom("chatBot")
-      .selectAll()
-      .where("id", "=", kb.chatbotId)
-      .executeTakeFirst();
+    const model = await modelService.getModelById(kb.chatbotId);
 
     if (!model || !model.apiKeyEnc) {
       return {
@@ -144,7 +103,7 @@ export const addTextToKnowledgeBase = async (
       };
     }
 
-    await ingestDocument(kbId, title, content, {
+    await knowledgeService.ingestDocument(kbId, title, content, {
       name: provider,
       apiKey: model.apiKeyEnc,
     });
@@ -158,21 +117,13 @@ export const addTextToKnowledgeBase = async (
 
 export const deleteKnowledgeDocument = async (id: string) => {
   try {
-    const doc = await db
-      .selectFrom("knowledgeDocument")
-      .select(["filename", "kbId"])
-      .where("id", "=", id)
-      .executeTakeFirst();
+    const doc = await knowledgeService.getKnowledgeDocumentById(id);
 
     if (!doc) {
       return { success: false, message: "Document not found" };
     }
 
-    await db
-      .deleteFrom("knowledgeDocument")
-      .where("kbId", "=", doc.kbId)
-      .where("filename", "=", doc.filename)
-      .execute();
+    await knowledgeService.deleteKnowledgeDocumentsByFile(doc.kbId, doc.filename);
 
     return { success: true, message: "Document deleted successfully" };
   } catch (error) {
@@ -180,14 +131,10 @@ export const deleteKnowledgeDocument = async (id: string) => {
     return { success: false, message: "Failed to delete document" };
   }
 };
+
 export const getKnowledgeDocuments = async (kbId: string) => {
   try {
-    const allChunks = await db
-      .selectFrom("knowledgeDocument")
-      .select(["id", "filename", "createdAt", "kbId"])
-      .where("kbId", "=", kbId)
-      .orderBy("createdAt", "desc")
-      .execute();
+    const allChunks = await knowledgeService.getKnowledgeDocuments(kbId);
 
     const uniqueFiles = [];
 
