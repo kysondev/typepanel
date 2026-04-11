@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@common/lib/db";
+import { jsonArrayFrom } from "kysely/helpers/postgres";
 
 export const getModelCount = async () => {
   try {
@@ -19,6 +20,14 @@ export const getModels = async () => {
   return await db
     .selectFrom("chatBot")
     .selectAll()
+    .select((eb) => [
+      jsonArrayFrom(
+        eb
+          .selectFrom("knowledgeBase")
+          .select(["id", "name", "description"])
+          .whereRef("knowledgeBase.chatbotId", "=", "chatBot.id"),
+      ).as("knowledgeBases"),
+    ])
     .orderBy("createdAt", "desc")
     .execute();
 };
@@ -74,6 +83,14 @@ export const getModelById = async (id: string) => {
   return await db
     .selectFrom("chatBot")
     .selectAll()
+    .select((eb) => [
+      jsonArrayFrom(
+        eb
+          .selectFrom("knowledgeBase")
+          .select(["id", "name", "description"])
+          .whereRef("knowledgeBase.chatbotId", "=", "chatBot.id"),
+      ).as("knowledgeBases"),
+    ])
     .where("id", "=", id)
     .executeTakeFirst();
 };

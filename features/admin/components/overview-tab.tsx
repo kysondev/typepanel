@@ -1,6 +1,7 @@
 import { Button } from "@common/components/ui/button";
 import { Cpu, Database, Plus, Users } from "lucide-react";
 import { getAdminStats } from "features/admin/actions/admin.action";
+import Link from "next/link";
 
 export default async function OverviewTab() {
   const statsRes = await getAdminStats();
@@ -14,13 +15,15 @@ export default async function OverviewTab() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
           <p className="text-neutral-500 text-sm">
-            See how your platform is performing today.
+            See how everything is today.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button size="sm" className="bg-[#0A0A0A] text-white px-4">
-            <Plus size={16} className="mr-2" /> New Chatbot
-          </Button>
+          <Link href="/admin/models">
+            <Button size="sm" className="bg-[#0A0A0A] text-white px-4">
+              <Plus size={16} className="mr-2" /> New Model
+            </Button>
+          </Link>
         </div>
       </div>
 

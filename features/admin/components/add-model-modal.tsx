@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "features/common/components/ui/modal";
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
@@ -22,10 +22,16 @@ export function AddModelModal({
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    model: "",
+    model: "gpt-4o-mini",
     provider: "gpt",
     apiKeyEnc: "",
   });
+
+  useEffect(() => {
+    const model =
+      formData.provider === "gpt" ? "gpt-4o-mini" : "gemini-2.5-pro";
+    setFormData((prev) => ({ ...prev, model }));
+  }, [formData.provider]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +55,7 @@ export function AddModelModal({
       onClose();
       setFormData({
         name: "",
-        model: "",
+        model: "gpt-4o-mini",
         provider: "gpt",
         apiKeyEnc: "",
       });
@@ -86,35 +92,20 @@ export function AddModelModal({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-sm font-bold text-neutral-700">
-                Provider
-              </label>
-              <select
-                className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition"
-                value={formData.provider}
-                onChange={(e) =>
-                  setFormData({ ...formData, provider: e.target.value })
-                }
-              >
-                <option value="gpt">GPT (OpenAI)</option>
-                <option value="gemini">Gemini (Google)</option>
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-sm font-bold text-neutral-700">
-                Model Name
-              </label>
-              <Input
-                placeholder="e.g. gpt-4o"
-                value={formData.model}
-                onChange={(e) =>
-                  setFormData({ ...formData, model: e.target.value })
-                }
-                required
-              />
-            </div>
+          <div className="space-y-1.5">
+            <label className="text-sm font-bold text-neutral-700">
+              Provider
+            </label>
+            <select
+              className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition"
+              value={formData.provider}
+              onChange={(e) =>
+                setFormData({ ...formData, provider: e.target.value })
+              }
+            >
+              <option value="gpt">GPT (OpenAI)</option>
+              <option value="gemini">Gemini (Google)</option>
+            </select>
           </div>
 
           <div className="space-y-1.5">

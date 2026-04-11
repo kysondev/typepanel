@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "features/common/components/ui/modal";
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
-import { X, Database, Plus } from "lucide-react";
+import { X, Database } from "lucide-react";
 import { updateModel } from "features/admin/actions/model.action";
 import { toast } from "react-hot-toast";
 
@@ -163,21 +163,40 @@ export function EditModelModal({
               <label className="text-sm font-bold text-neutral-700 flex items-center gap-2">
                 <Database size={16} /> Knowledge Bases
               </label>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-8 text-xs font-bold text-neutral-600 hover:text-neutral-900"
-              >
-                <Plus size={14} className="mr-1" /> Attach
-              </Button>
             </div>
 
-            <div className="py-8 bg-neutral-50 rounded-xl border border-dashed border-neutral-200 text-center">
-              <p className="text-xs text-neutral-400 font-medium">
-                No knowledge bases attached
-              </p>
-            </div>
+            {model?.knowledgeBases && model.knowledgeBases.length > 0 ? (
+              <div className="grid grid-cols-1 gap-2">
+                {model.knowledgeBases.map((kb: any) => (
+                  <div
+                    key={kb.id}
+                    className="flex items-center justify-between p-3 rounded-xl border border-neutral-200"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 bg-white rounded-lg border border-neutral-100">
+                        <Database size={14} className="text-neutral-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-neutral-900">
+                          {kb.name}
+                        </p>
+                        {kb.description && (
+                          <p className="text-xs text-neutral-500 line-clamp-1">
+                            {kb.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 bg-neutral-50 rounded-xl border border-dashed border-neutral-200 text-center">
+                <p className="text-xs text-neutral-400 font-medium">
+                  No knowledge bases attached
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-neutral-100">

@@ -85,17 +85,6 @@ export default function AdminLayout({
         </nav>
 
         <div className="p-4 mt-auto border-t border-neutral-800/50">
-          <div className="flex items-center gap-3 px-3 py-4">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
-                Kyson Weng
-              </p>
-              <p className="text-xs text-neutral-500 truncate">Admin</p>
-            </div>
-            <button className="text-neutral-500 hover:text-white transition-colors">
-              <Settings size={18} />
-            </button>
-          </div>
           <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-500 hover:text-red-400 hover:bg-red-400/5 transition-colors">
             <LogOut size={18} />
             Sign out

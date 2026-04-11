@@ -1,10 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, Upload, Type, Loader2, Database, FileText, Trash2, Search, Calendar, FileJson } from "lucide-react";
+import {
+  ArrowLeft,
+  Upload,
+  Type,
+  Loader2,
+  Database,
+  FileText,
+  Trash2,
+  Search,
+  Calendar,
+  FileJson,
+} from "lucide-react";
 import { Button } from "features/common/components/ui/button";
 import Link from "next/link";
-import { getKnowledgeBaseById, getKnowledgeDocuments, deleteKnowledgeDocument } from "features/admin/actions/knowledge.action";
+import {
+  getKnowledgeBaseById,
+  getKnowledgeDocuments,
+  deleteKnowledgeDocument,
+} from "features/admin/actions/knowledge.action";
 import { toast } from "react-hot-toast";
 import { AddTextContentModal } from "./add-text-content-modal";
 import { Input } from "features/common/components/ui/input";
@@ -66,7 +81,7 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
   };
 
   const filteredDocs = documents.filter((doc) =>
-    doc.filename.toLowerCase().includes(searchQuery.toLowerCase())
+    doc.filename.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (isLoading) {
@@ -127,7 +142,10 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
           >
             <Type size={14} className="mr-2" /> Add Text
           </Button>
-          <Button size="sm" className="bg-neutral-900 text-white font-bold h-10 px-4">
+          <Button
+            size="sm"
+            className="bg-neutral-900 text-white font-bold h-10 px-4"
+          >
             <Upload size={14} className="mr-2" /> Upload Files
           </Button>
         </div>
@@ -135,27 +153,19 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
-              Total Documents
-            </p>
-            <div className="p-1.5 bg-neutral-50 rounded-lg">
-              <Database size={14} className="text-neutral-400" />
-            </div>
-          </div>
-          <p className="text-3xl font-bold text-neutral-900 mt-2">{documents.length}</p>
+          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+            Total Documents
+          </p>
+          <p className="text-3xl font-bold text-neutral-900 mt-2">
+            {documents.length}
+          </p>
         </div>
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
-              Last Updated
-            </p>
-            <div className="p-1.5 bg-neutral-50 rounded-lg">
-              <Calendar size={14} className="text-neutral-400" />
-            </div>
-          </div>
+          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+            Last Updated
+          </p>
           <p className="text-xl font-bold text-neutral-900 mt-2">
-            {documents.length > 0 
+            {documents.length > 0
               ? new Date(documents[0].createdAt).toLocaleDateString()
               : "N/A"}
           </p>
@@ -166,9 +176,12 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-lg font-bold text-neutral-900">Documents</h2>
           <div className="relative max-w-xs w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={14} />
-            <Input 
-              placeholder="Search documents..." 
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
+              size={14}
+            />
+            <Input
+              placeholder="Search documents..."
               className="pl-9 h-9 text-xs"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -192,7 +205,8 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
               Your collection is empty
             </h3>
             <p className="text-neutral-500 text-sm max-w-sm mt-2 mb-8 leading-relaxed">
-              Add some text or upload files to start building your knowledge base.
+              Add some text or upload files to start building your knowledge
+              base.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
@@ -203,7 +217,10 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
               >
                 <Type size={16} className="mr-2" /> Add Text content
               </Button>
-              <Button size="sm" className="bg-neutral-900 text-white font-bold h-10 px-6">
+              <Button
+                size="sm"
+                className="bg-neutral-900 text-white font-bold h-10 px-6"
+              >
                 <Upload size={16} className="mr-2" /> Upload Files
               </Button>
             </div>
@@ -214,14 +231,23 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-neutral-50/50 border-b border-neutral-100">
-                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Document</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Created At</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest text-right">Actions</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                      Document
+                    </th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                      Created At
+                    </th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest text-right">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-100">
                   {filteredDocs.map((doc) => (
-                    <tr key={doc.id} className="group hover:bg-neutral-50/30 transition-colors">
+                    <tr
+                      key={doc.id}
+                      className="group hover:bg-neutral-50/30 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-neutral-100 rounded-lg text-neutral-600 group-hover:bg-neutral-900 group-hover:text-white transition-all">
@@ -235,7 +261,11 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-xs font-medium text-neutral-500">
-                        {new Date(doc.createdAt).toLocaleDateString()} at {new Date(doc.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(doc.createdAt).toLocaleDateString()} at{" "}
+                        {new Date(doc.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <Button
@@ -251,7 +281,10 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
                   ))}
                   {filteredDocs.length === 0 && searchQuery && (
                     <tr>
-                      <td colSpan={3} className="px-6 py-10 text-center text-neutral-500 text-sm">
+                      <td
+                        colSpan={3}
+                        className="px-6 py-10 text-center text-neutral-500 text-sm"
+                      >
                         No documents found matching "{searchQuery}"
                       </td>
                     </tr>
@@ -263,7 +296,7 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
         )}
       </div>
 
-      <AddTextContentModal 
+      <AddTextContentModal
         isOpen={isAddTextModalOpen}
         onClose={() => setIsAddTextModalOpen(false)}
         kbId={id}

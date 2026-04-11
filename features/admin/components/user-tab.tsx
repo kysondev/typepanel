@@ -26,16 +26,6 @@ export default async function UsersTab({ page = 1 }: { page?: number }) {
             Manage access and roles for all platform members.
           </p>
         </div>
-        <div className="relative group">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors"
-            size={16}
-          />
-          <input
-            placeholder="Search users..."
-            className="bg-white border border-neutral-200 rounded-lg py-2 pl-10 pr-4 text-sm w-full md:w-64 focus:ring-2 focus:ring-neutral-100 outline-none transition-all placeholder:text-neutral-400"
-          />
-        </div>
       </div>
 
       <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-visible">
@@ -104,13 +94,7 @@ export default async function UsersTab({ page = 1 }: { page?: number }) {
 
         <div className="px-6 py-4 border-t border-neutral-100 bg-neutral-50/30 flex items-center justify-between">
           <p className="text-xs text-neutral-500 font-medium">
-            Showing{" "}
-            <span className="text-neutral-900">{(page - 1) * limit + 1}</span>{" "}
-            to{" "}
-            <span className="text-neutral-900">
-              {Math.min(page * limit, totalCount)}
-            </span>{" "}
-            of <span className="text-neutral-900">{totalCount}</span> users
+            Showing <span className="text-neutral-900">{totalCount}</span> users
           </p>
           <div className="flex items-center gap-2">
             <Button

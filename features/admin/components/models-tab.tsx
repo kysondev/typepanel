@@ -56,29 +56,33 @@ export default function ModelsTab() {
             Configure and manage the AI models available for your chatbots.
           </p>
         </div>
-        <Button 
-          size="sm" 
+        <Button
+          size="sm"
           className="bg-[#0A0A0A] text-white px-4"
           onClick={() => setIsAddModalOpen(true)}
         >
-          <Plus size={16} className="mr-2" /> Add New Model
+          <Plus size={16} className="mr-2" /> New Model
         </Button>
       </div>
 
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <Loader2 className="animate-spin text-neutral-400" size={40} />
-          <p className="text-neutral-500 text-sm font-medium">Loading models...</p>
+          <p className="text-neutral-500 text-sm font-medium">
+            Loading models...
+          </p>
         </div>
       ) : models.length === 0 ? (
         <div className="text-center py-20 border-2 border-dashed border-neutral-200 rounded-3xl">
           <Cpu className="mx-auto text-neutral-300 mb-4" size={48} />
-          <h3 className="text-lg font-bold text-neutral-900">No models found</h3>
+          <h3 className="text-lg font-bold text-neutral-900">
+            No models found
+          </h3>
           <p className="text-neutral-500 text-sm mt-1 mb-6">
             You haven't added any AI models yet.
           </p>
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             className="bg-[#0A0A0A] text-white px-6"
             onClick={() => setIsAddModalOpen(true)}
           >
@@ -149,7 +153,7 @@ export default function ModelsTab() {
             </div>
           ))}
 
-          <button 
+          <button
             onClick={() => setIsAddModalOpen(true)}
             className="border-2 border-dashed border-neutral-200 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-neutral-300 hover:bg-neutral-50/50 transition-all min-h-[280px] group"
           >
@@ -171,9 +175,9 @@ export default function ModelsTab() {
         </div>
       )}
 
-      <AddModelModal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
+      <AddModelModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         onSuccess={fetchModels}
       />
 

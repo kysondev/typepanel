@@ -118,10 +118,11 @@ export function KnowledgeBase() {
 
                       <div className="flex items-center gap-4 mt-4">
                         <div className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-600">
-                          <span className="text-neutral-900 font-bold">{coll.documentCount || 0}</span>
+                          <span className="text-neutral-900 font-bold">
+                            {coll.documentCount || 0}
+                          </span>
                           <span className="text-neutral-400">chunks</span>
                         </div>
-                        <div className="w-1 h-1 rounded-full bg-neutral-200" />
                         <div className="text-[12px] font-medium text-neutral-400">
                           Created{" "}
                           {new Date(coll.createdAt).toLocaleDateString()}
