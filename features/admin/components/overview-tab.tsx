@@ -2,6 +2,7 @@ import { Button } from "@common/components/ui/button";
 import { Cpu, Database, Plus, Users } from "lucide-react";
 import { getAdminStats } from "features/admin/actions/admin.action";
 import Link from "next/link";
+import { Playground } from "./playground";
 
 export default async function OverviewTab() {
   const statsRes = await getAdminStats();
@@ -75,6 +76,10 @@ export default async function OverviewTab() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="pt-4">
+        <Playground />
       </div>
     </div>
   );
