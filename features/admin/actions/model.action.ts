@@ -5,7 +5,7 @@ import * as modelService from "features/core/model/services/model.service";
 export const getModels = async () => {
   try {
     const models = await modelService.getModels();
-    return { success: true, data: models };
+    return { success: true, data: JSON.parse(JSON.stringify(models)) };
   } catch (error) {
     console.error("Failed to fetch models:", error);
     return { success: false, message: "Failed to fetch models" };

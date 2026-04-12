@@ -14,7 +14,7 @@ export const getUser = async () => {
     return {
       success: true,
       message: "User fetched successfully",
-      data: session.user,
+      data: JSON.parse(JSON.stringify(session.user)),
     };
   };
   const headersList = await headers();
