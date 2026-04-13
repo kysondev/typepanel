@@ -1,5 +1,5 @@
 "use client";
-import { adminSignUp } from "features/core/auth/actions/auth.action";
+import { adminSignUp } from "@auth/auth.controller";
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
 import { Loading } from "features/common/components/ui/loading";

@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   experimental: {
     useCache: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/chat",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

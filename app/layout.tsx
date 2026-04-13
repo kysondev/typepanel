@@ -26,7 +26,32 @@ export default function RootLayout({
       <body className={`antialiased ${raleway.variable} font-sans`}>
         <div>
           <Toaster
-            toastOptions={{ style: { background: "#232323", color: "#fff" } }}
+            position="top-right"
+            toastOptions={{
+              className: raleway.variable,
+              style: {
+                background: "#0A0A0A",
+                color: "#fff",
+                borderRadius: "12px",
+                fontSize: "14px",
+                fontWeight: "500",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                padding: "12px 20px",
+                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+              },
+              success: {
+                iconTheme: {
+                  primary: "#22c55e",
+                  secondary: "#fff",
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: "#ef4444",
+                  secondary: "#fff",
+                },
+              },
+            }}
           />
         </div>
         {children}

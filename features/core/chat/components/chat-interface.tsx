@@ -12,14 +12,14 @@ import {
   UserIcon,
 } from "lucide-react";
 import { Button } from "features/common/components/ui/button";
-import { getModels } from "features/admin/actions/model.action";
+import { getModelsHandler } from "features/core/model/model.controller";
 import {
-  getChatSessionsAction,
-  getChatMessagesAction,
-  createChatSessionAction,
-  deleteChatSessionAction,
-} from "features/core/chat/actions/chat.action";
-import { testModel } from "features/admin/actions/playground.action";
+  createChatSessionHandler,
+  deleteChatSessionHandler,
+  getChatMessagesHandler,
+  getChatSessionsHandler,
+} from "features/core/chat/chat.controller";
+import { testModel } from "features/core/admin/playground.controller";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { User } from "db/models.types";
@@ -39,8 +39,8 @@ export function ChatInterface({ user }: { user: User }) {
   useEffect(() => {
     async function loadInitialData() {
       const [modelsResult, chatsResult] = await Promise.all([
-        getModels(),
-        getChatSessionsAction(user.id),
+        getModelsHandler(),
+        getChatSessionsHandler(user.id),
       ]);
 
       if (modelsResult.success) {
@@ -76,7 +76,7 @@ export function ChatInterface({ user }: { user: User }) {
   }, [messages]);
 
   async function loadMessages(chatId: string) {
-    const result = await getChatMessagesAction(chatId);
+    const result = await getChatMessagesHandler(chatId);
     if (result.success) {
       setMessages(result.data || []);
     }
@@ -93,7 +93,7 @@ export function ChatInterface({ user }: { user: User }) {
 
     let chatId = activeChatId;
     if (!chatId) {
-      const result = await createChatSessionAction(chosenModelId, user.id);
+      const result = await createChatSessionHandler(chosenModelId, user.id);
 
       if (result.success && result.data) {
         chatId = result.data.id;
@@ -131,7 +131,7 @@ export function ChatInterface({ user }: { user: User }) {
 
   async function deleteChat(e: React.MouseEvent, chatId: string) {
     e.stopPropagation();
-    const result = await deleteChatSessionAction(chatId, user.id);
+    const result = await deleteChatSessionHandler(chatId, user.id);
     if (result.success) {
       setChats(chats.filter((c) => c.id !== chatId));
       if (activeChatId === chatId) {

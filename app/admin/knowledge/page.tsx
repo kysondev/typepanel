@@ -1,4 +1,4 @@
-import { KnowledgeBase } from "features/admin/components/knowledge-base-tab";
+import { KnowledgeBase } from "features/core/admin/components/knowledge-base-tab";
 
 export default function KnowledgePage() {
   return <KnowledgeBase />;

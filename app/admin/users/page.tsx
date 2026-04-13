@@ -1,4 +1,4 @@
-import UsersTab from "features/admin/components/user-tab";
+import UsersTab from "features/core/admin/components/user-tab";
 
 export default async function UsersPage({
   searchParams,

@@ -1,8 +1,8 @@
-import { adminExists } from "@auth/services/user.service";
+import { checkAdminExists } from "features/core/user/user.service";
 
 export async function GET() {
   try {
-    const adminExist = await adminExists();
+    const adminExist = await checkAdminExists();
     return Response.json({ adminExist });
   } catch (error) {
     return Response.json({ adminExist: false });

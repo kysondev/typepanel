@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Modal } from "@common/components/ui/modal";
 import { Button } from "./button";
 import { Input } from "./input";
-import { updateUser } from "features/admin/actions/user.action";
+import { updateUser } from "features/core/admin/admin.controller";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +29,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
     setIsLoading(true);
 
     const res = await updateUser(user.id, { name, email });
-    
+
     if (res.success) {
       toast.success(res.message);
       router.refresh();
@@ -51,7 +51,10 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
 
           <div className="mt-6 space-y-4">
             <div className="space-y-1.5">
-              <label htmlFor="name" className="text-sm font-medium text-neutral-700">
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-neutral-700"
+              >
                 Full Name
               </label>
               <Input
@@ -62,7 +65,10 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-sm font-medium text-neutral-700">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-neutral-700"
+              >
                 Email Address
               </label>
               <Input
@@ -87,11 +93,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            loading={isLoading}
-            className="rounded-lg h-9"
-          >
+          <Button type="submit" loading={isLoading} className="rounded-lg h-9">
             Save Changes
           </Button>
         </div>

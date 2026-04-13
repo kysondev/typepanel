@@ -1,7 +1,4 @@
-import {
-  AUTH_ROUTES,
-  PROTECTED_ROUTES,
-} from "features/core/auth/config/routes";
+import { AUTH_ROUTES, PROTECTED_ROUTES } from "@common/config/routes";
 import { NextResponse, type NextRequest } from "next/server";
 
 async function getSession(request: NextRequest) {
@@ -46,11 +43,12 @@ async function hasAdminUser(request: NextRequest) {
 
 export default async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
-  const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
-    currentPath === route || currentPath.startsWith(`${route}/`)
+  const isProtectedRoute = PROTECTED_ROUTES.some(
+    (route) => currentPath === route || currentPath.startsWith(`${route}/`),
   );
   const isAuthRoute = AUTH_ROUTES.includes(currentPath);
-  const isAdminRoute = currentPath === "/admin" || currentPath.startsWith("/admin/");
+  const isAdminRoute =
+    currentPath === "/admin" || currentPath.startsWith("/admin/");
 
   if (isProtectedRoute || isAuthRoute || isAdminRoute) {
     const session = await getSession(request);

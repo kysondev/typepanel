@@ -1,9 +1,4 @@
 "use client";
-import {
-  signInWithEmail,
-  signInWithGithub,
-  signInWithGoogle,
-} from "features/core/auth/actions/auth.action";
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
 import { Loading } from "features/common/components/ui/loading";
@@ -11,6 +6,7 @@ import Form from "next/form";
 import Link from "next/link";
 import { useTransition } from "react";
 import { GitHubDark, Google } from "developer-icons";
+import { signInWithEmail, signInWithSocial } from "@auth/auth.controller";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -90,7 +86,7 @@ const LoginForm = () => {
             variant="outline"
             size="form"
             onClick={async () => {
-              await signInWithGoogle();
+              await signInWithSocial("google");
             }}
             className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >
@@ -102,7 +98,7 @@ const LoginForm = () => {
             variant="outline"
             size="form"
             onClick={async () => {
-              await signInWithGithub();
+              await signInWithSocial("github");
             }}
             className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >

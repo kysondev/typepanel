@@ -1,4 +1,4 @@
-import ModelsTab from "features/admin/components/models-tab";
+import ModelsTab from "features/core/admin/components/models-tab";
 
 export default function ModelsPage() {
   return <ModelsTab />;

@@ -1,29 +1,47 @@
 "use client";
-import {
-  signInWithGithub,
-  signInWithGoogle,
-  signUp,
-} from "features/core/auth/actions/auth.action";
+
 import { Button } from "features/common/components/ui/button";
 import { Input } from "features/common/components/ui/input";
 import { Loading } from "features/common/components/ui/loading";
 import Form from "next/form";
 import Link from "next/link";
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { GitHubDark, Google } from "developer-icons";
+import { signInWithSocial, signUp } from "@auth/auth.controller";
 
 const SignUpForm = () => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const handleSignUp = async (formData: FormData) => {
+    startTransition(async () => {
+      const result = await signUp(formData);
+
+      if (!result.success) {
+        toast.error(result.message || "Failed to create account");
+        return;
+      }
+
+      toast.success(result.message || "Account created successfully");
+      router.push("/");
+    });
+  };
+
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    startTransition(async () => {
+      const result = await signInWithSocial(provider);
+
+      if (!result.success) {
+        toast.error(result.message || "Failed to sign in with social account");
+      }
+    });
+  };
+
   return (
     <>
-      <Form
-        action={async (formData) => {
-          startTransition(async () => {
-            await signUp(formData);
-          });
-        }}
-        className="space-y-5"
-      >
+      <Form action={handleSignUp} className="space-y-5">
         <div>
           <label
             htmlFor="name"
@@ -56,7 +74,6 @@ const SignUpForm = () => {
             className="text-[#0A0A0A]"
           />
         </div>
-
         <div>
           <label
             htmlFor="password"
@@ -73,7 +90,6 @@ const SignUpForm = () => {
             className="text-[#0A0A0A]"
           />
         </div>
-
         <div className="flex gap-1 text-xs mt-1 text-neutral-500">
           <span>Already have an account?</span>
           <Link
@@ -83,7 +99,6 @@ const SignUpForm = () => {
             Login
           </Link>
         </div>
-
         <Button
           type="submit"
           disabled={isPending}
@@ -93,6 +108,7 @@ const SignUpForm = () => {
           {isPending ? <Loading /> : "Sign up"}
         </Button>
       </Form>
+
       <div className="mt-8 pt-6 border-t border-neutral-100">
         <p className="text-xs text-center text-neutral-500 mb-4">
           Or continue with
@@ -102,9 +118,8 @@ const SignUpForm = () => {
             type="button"
             variant="outline"
             size="form"
-            onClick={async () => {
-              await signInWithGoogle();
-            }}
+            disabled={isPending}
+            onClick={() => handleSocialSignIn("google")}
             className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >
             <Google className="mr-2" size={16} />
@@ -114,9 +129,8 @@ const SignUpForm = () => {
             type="button"
             variant="outline"
             size="form"
-            onClick={async () => {
-              await signInWithGithub();
-            }}
+            disabled={isPending}
+            onClick={() => handleSocialSignIn("github")}
             className="flex items-center justify-center w-full rounded-lg border-neutral-200 text-[#0A0A0A] text-sm shadow-sm hover:border-neutral-300"
           >
             <GitHubDark className="mr-2" size={16} />
@@ -127,4 +141,5 @@ const SignUpForm = () => {
     </>
   );
 };
+
 export default SignUpForm;

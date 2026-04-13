@@ -1,4 +1,4 @@
-import { KnowledgeCollectionView } from "features/admin/components/knowledge-collection-view";
+import { KnowledgeCollectionView } from "features/core/admin/components/knowledge-collection-view";
 
 export default async function KnowledgeCollectionPage({
   params,
