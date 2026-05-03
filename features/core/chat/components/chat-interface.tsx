@@ -23,6 +23,7 @@ import { testModel } from "features/core/admin/playground.controller";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { User } from "db/models.types";
+import { Markdown } from "features/common/components/ui/markdown";
 
 export function ChatInterface({ user }: { user: User }) {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -286,8 +287,12 @@ export function ChatInterface({ user }: { user: User }) {
                     <p className="text-[10px] font-bold text-neutral-900 uppercase tracking-widest opacity-40">
                       {msg.role === "assistant" ? "TypePanel AI" : "You"}
                     </p>
-                    <div className="text-sm text-neutral-800 leading-relaxed font-medium whitespace-pre-wrap">
-                      {msg.content}
+                    <div className="text-sm text-neutral-800 leading-relaxed font-medium">
+                      {msg.role === "assistant" ? (
+                        <Markdown content={msg.content} />
+                      ) : (
+                        <div className="whitespace-pre-wrap">{msg.content}</div>
+                      )}
                     </div>
                   </div>
                 </div>

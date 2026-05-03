@@ -6,6 +6,7 @@ import { Send, Loader2, RotateCcw } from "lucide-react";
 import { getModelsHandler } from "features/core/model/model.controller";
 import { testModel } from "features/core/admin/playground.controller";
 import { toast } from "react-hot-toast";
+import { Markdown } from "features/common/components/ui/markdown";
 
 export function Playground() {
   const [models, setModels] = useState<any[]>([]);
@@ -106,8 +107,12 @@ export function Playground() {
               <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
                 {m.role === "assistant" ? "Assistant" : "Admin"}
               </p>
-              <div className="text-sm text-neutral-800 leading-relaxed whitespace-pre-wrap">
-                {m.content}
+              <div className="text-sm text-neutral-800 leading-relaxed">
+                {m.role === "assistant" ? (
+                  <Markdown content={m.content} />
+                ) : (
+                  <div className="whitespace-pre-wrap">{m.content}</div>
+                )}
               </div>
             </div>
           ))
