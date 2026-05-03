@@ -1,4 +1,4 @@
-"use server";
+"use client";
 
 import { authClient } from "@auth/auth-client.config";
 import { signInSchema, signUpSchema } from "@auth/auth.schema";

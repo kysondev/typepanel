@@ -1,4 +1,4 @@
-"server only";
+"use server";
 
 import { auth } from "@auth/auth-server.config";
 import { db } from "@common/lib/db";
