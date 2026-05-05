@@ -20,6 +20,7 @@ import {
 } from "features/core/knowledge/knowledge.controller";
 import { toast } from "react-hot-toast";
 import { AddTextContentModal } from "./add-text-content-modal";
+import { UploadFilesModal } from "./upload-files-modal";
 import { Input } from "features/common/components/ui/input";
 import { ConfirmModal } from "@common/components/ui/confirm-modal";
 
@@ -33,6 +34,7 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isDocsLoading, setIsDocsLoading] = useState(true);
   const [isAddTextModalOpen, setIsAddTextModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [docToDelete, setDocToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -143,6 +145,7 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
           <Button
             size="sm"
             className="bg-neutral-900 text-white font-bold h-10 px-4"
+            onClick={() => setIsUploadModalOpen(true)}
           >
             <Upload size={14} className="mr-2" /> Upload Files
           </Button>
@@ -218,6 +221,7 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
               <Button
                 size="sm"
                 className="bg-neutral-900 text-white font-bold h-10 px-6"
+                onClick={() => setIsUploadModalOpen(true)}
               >
                 <Upload size={16} className="mr-2" /> Upload Files
               </Button>
@@ -297,6 +301,13 @@ export function KnowledgeCollectionView({ id }: KnowledgeCollectionViewProps) {
       <AddTextContentModal
         isOpen={isAddTextModalOpen}
         onClose={() => setIsAddTextModalOpen(false)}
+        kbId={id}
+        onSuccess={fetchDocuments}
+      />
+
+      <UploadFilesModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
         kbId={id}
         onSuccess={fetchDocuments}
       />
