@@ -83,7 +83,7 @@ export function AddModelModal({
               Display Name
             </label>
             <Input
-              placeholder="e.g. My Custom GPT"
+              placeholder="e.g. My Custom AI Model"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -94,7 +94,7 @@ export function AddModelModal({
 
           <div className="space-y-1.5">
             <label className="text-sm font-bold text-neutral-700">
-              Provider
+              Base Model Provider
             </label>
             <select
               className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition"
@@ -103,8 +103,8 @@ export function AddModelModal({
                 setFormData({ ...formData, provider: e.target.value })
               }
             >
-              <option value="gpt">GPT (OpenAI)</option>
-              <option value="gemini">Gemini (Google)</option>
+              <option value="gpt">OpenAI</option>
+              <option value="gemini">Google</option>
             </select>
           </div>
 

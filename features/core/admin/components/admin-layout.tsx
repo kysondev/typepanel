@@ -10,11 +10,12 @@ import {
   Search,
   ChevronRight,
   Bell,
-  Settings,
+  MessageSquare,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "features/common/components/ui/button";
 
 export default function AdminLayout({
   children,
@@ -101,6 +102,17 @@ export default function AdminLayout({
               {activeTab}
             </span>
           </div>
+
+          <Link href="/chat">
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-bold border-neutral-200 h-9 px-4 text-xs"
+            >
+              <MessageSquare size={14} className="mr-2" />
+              Go to Chat
+            </Button>
+          </Link>
         </header>
 
         <main className="flex-1 overflow-auto bg-[#FDFDFD]">

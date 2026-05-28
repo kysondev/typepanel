@@ -92,7 +92,7 @@ export function EditModelModal({
                 Display Name
               </label>
               <Input
-                placeholder="e.g. My Custom GPT"
+                placeholder="e.g. My Custom AI Model"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
